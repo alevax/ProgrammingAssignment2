@@ -1,17 +1,20 @@
 ##
 # Computaiton of the inverse of a matrix
-# by using chaching features
+# by using chaching features in R
 # --------------------------------------
 
-## It creates a special matrix for the caching puprose
+## 
+# makeCacheMatrix: function
+#   It creates a special matrix for the caching purpose
+# -----------------------------------------------------
 makeCacheMatrix <- function( .matrix = matrix() ) 
 {
   .inverse <- NULL
   set <- function(myMatrix) {
     .matrix <<- myMatrix
-    .inverse <<- NULL
+    .inverse <<- NULL # the inversion is not existing yet because it is a new matrix object
   }
-  get <- function() .matrix
+  get <- function() .matrix # return the matrix
   
   setInverse <- function(myInverse) .inverse <<- myInverse
   getInverse <- function() .inverse
@@ -22,20 +25,25 @@ makeCacheMatrix <- function( .matrix = matrix() )
   return(res)
 }
 
-## It returns the inverse of the matrix
-# If the inverse of the matrix is already computed and stored in the cache it is returning that one, 
-# otherwise is computing the inversion ex novo
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
-  inverse <- x$getInverse()
-  if(!is.null(inverse)) {
+## 
+# cacheSolve: function
+# It comnpute and returns the inverse of the matrix
+#   If the inverse of the matrix is already computed and stored in the cache it is returning that one, 
+#   otherwise is computing the inversion ex novo
+# ----------------------------------------------------------------------------------------------------
+cacheSolve <- function(x) 
+{
+  inverse <- x$getInverse() # Get the inverse (cached)
+  
+  if(!is.null(inverse)) { # test if the inverse is already computed
     message("getting cached data")
-    return(inverse)
+    return(inverse) #return in that case 
   }
-  data <- x$get()
-  inverse <- solve(data, ...)
-  x$setInverse(inverse)
-  return(inverse)
+  # It is continuing if the inverse object (the cached one) is empty
+  data <- x$get() # get the matrix
+  inverse <- solve(data) # compute the inversion
+  x$setInverse(inverse) # save in the cache
+  return(inverse)# return the inverted matrix
 }
 
 ##
